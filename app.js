@@ -4,7 +4,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var exphbs = require('express-handlebars');
 var hfc = require('hfc');
-//var util = require('util');
+var util = require('util');
 var expressValidator = require('express-validator');
 var flash = require('connect-flash');
 var session = require('express-session');
@@ -21,7 +21,6 @@ var users = require('./routes/users');
 
 // Init App
 var app = express();
-
 // View Engine
 app.set('views', path.join(__dirname, 'views'));
 app.engine('handlebars', exphbs({defaultLayout:'layout'}));
@@ -146,7 +145,7 @@ var app_user;
 
 // chaincodeID will store the chaincode ID value after deployment which is
 // later used to execute invocations and queries
-var chaincodeID;
+global.chaincodeID;
 
 ////////////////////////////////////////////////////////////////////////////////
 // The second part of this app does the required setup to register itself     //
@@ -275,10 +274,11 @@ app.use(bodyParser.json());
 //
 // Add route for a chaincode query request for a specific state variable
 //
-/*app.get("/state/:var", function(req, res) {
-  // State variable to retrieve
-  var stateVar = req.params.var;
+console.log("Checking");
 
+app.get("/state/:var", function(req, res) {
+  // State variable to retrieve
+  //var stateVar = req.params.var;
   // Construct the query request
   var queryRequest = {
     // Name (hash) required for query
@@ -297,17 +297,50 @@ app.use(bodyParser.json());
     console.log(util.format("Successfully queried existing chaincode state: " +
     "request=%j, response=%j, value=%s", queryRequest, results, results.result.toString()));
 
-    res.status(200).json({ "value": results.result.toString() });
+    
+    //var x="1";
+    //console.log(x+"X");
+    //if(x=="1")
+    //{
+      //console.log("her <label>Cleared </label>
+   // <Button type="submit" disabled value="2" name="submit" class="btn btn-default" id="2">Level2</Button>e");
+     // $("input[type='submit']").prop('disabled', false);
+
+    
+
+     // var button=document.getElementById("2");=");===
+      //button.disabled(false);
+    //res.document.getElementById("2").disabled(false);
+      /*<script type="javascript/text"
+      var button=document.getElementById("2");
+      button.disabled(false);
+     <l
+      
+      res.redirect("/");
+      />*/
+      
+   // }
+   //var cnt=0;
+
+   //res.json({"value":"0" ,"url":"/public/img1"});
+if(results.result.toString()=="1")
+      res.json({ "value": results.result.toString()  ,"url":"/public/img1" });
+    else if(results.result.toString()=="2")
+      res.json({ "value": results.result.toString()  ,"url":"/public/img2"});
+      else
+      res.json({ "value": results.result.toString()  ,"url":"/public/img3"});
+
+    
   });
   // Query failed
-  queryTx.on('error', function (err) {
+ queryTx.on('error', function (err) {
     var errorMsg = util.format("ERROR: Failed to query existing chaincode " +
     "state: request=%j, error=%j", queryRequest, err);
 
     console.log(errorMsg);
 
     res.status(500).json({ error: errorMsg });
-  });
+ });
 });
 
 //
@@ -315,8 +348,8 @@ app.use(bodyParser.json());
 //
 app.post('/transactions', function(req, res) {
   // Amount to transfer
-  var amount = req.body.read;
-
+ var amount = req.body.submit;
+  console.log("amount "+amount);
   // Construct the invoke request
   var invokeRequest = {
     // Name (hash) required for invoke
@@ -324,7 +357,7 @@ app.post('/transactions', function(req, res) {
     // Function to trigger
     fcn: "invoke",
     // Parameters for the invoke function
-    args: ["account", amount]
+    args: ["aarushi", amount]
   };
 
   // Trigger the invoke transaction
@@ -334,8 +367,10 @@ app.post('/transactions', function(req, res) {
   invokeTx.on('submitted', function (results) {
     console.log(util.format("Successfully submitted chaincode invoke " +
     "transaction: request=%j, response=%j", invokeRequest, results));
+   // res.redirect('/state/aarushi');
+   res.render('index.handlebars');
 
-    res.status(200).json({ status: "submitted" });
+  //  res.status(200).json({ status: "submitted" });
   });
   // Invoke transaction submission failed
   invokeTx.on('error', function (err) {
@@ -346,7 +381,7 @@ app.post('/transactions', function(req, res) {
 
     res.status(500).json({ error: errorMsg });
   });
-});*/
+});
 
 
 app.use('/', routes);
