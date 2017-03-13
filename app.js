@@ -278,7 +278,7 @@ console.log("Checking");
 
 app.get("/state/:var", function(req, res) {
   // State variable to retrieve
-  //var stateVar = req.params.var;
+  var stateVar = req.params.var;
   // Construct the query request
   var queryRequest = {
     // Name (hash) required for query
