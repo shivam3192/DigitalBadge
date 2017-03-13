@@ -75,7 +75,7 @@ app.use(function (req, res, next) {
   next();
 });
 
-var DOCKER_HOST_IP ='139.59.7.197';
+var DOCKER_HOST_IP ='139.59.41.150';
 if (DOCKER_HOST_IP == null || DOCKER_HOST_IP == "") {
   console.log("ERROR: No Docker Host IP specified! Exiting.");
   process.exit(1);
