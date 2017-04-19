@@ -3,7 +3,7 @@ var router = express.Router();
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 
-var User = require('../models/user');
+var User = require('../models/userDetails');
 
 // Register
 router.get('/register', function(req, res){
@@ -17,20 +17,18 @@ router.get('/login', function(req, res){
 
 // Register User
 router.post('/register', function(req, res){
-	var name = req.body.name;
-	var email = req.body.email;
-	var username = req.body.username;
-	var password = req.body.password;
-	var password2 = req.body.password2;
+	var roll_no = req.body.roll_no;
+	var userName = req.body.userName;
+	var credit = req.body.credit;
+	var sem = req.body.sem;
+	
 
 	// Validation
-	req.checkBody('name', 'Name is required').notEmpty();
-	req.checkBody('email', 'Email is required').notEmpty();
-	req.checkBody('email', 'Email is not valid').isEmail();
-	req.checkBody('username', 'Username is required').notEmpty();
-	req.checkBody('password', 'Password is required').notEmpty();
-	req.checkBody('password2', 'Passwords do not match').equals(req.body.password);
-
+	req.checkBody('roll_no', 'Roll_no is required').notEmpty();
+	req.checkBody('userName', 'UserName is required').notEmpty();
+	req.checkBody('credit', 'Credit is required').notEmpty();
+	req.checkBody('sem', 'Sem is required').notEmpty();
+	
 	var errors = req.validationErrors();
 
 	if(errors){
@@ -39,10 +37,10 @@ router.post('/register', function(req, res){
 		});
 	} else {
 		var newUser = new User({
-			name: name,
-			email:email,
-			username: username,
-			password: password
+			roll_no: roll_no,
+			userName:userName,
+			credit: credit,
+			sem : sem 
 		});
 
 		User.createUser(newUser, function(err, user){
@@ -64,14 +62,7 @@ passport.use(new LocalStrategy(
    		return done(null, false, {message: 'Unknown User'});
    	}
 
-   	User.comparePassword(password, user.password, function(err, isMatch){
-   		if(err) throw err;
-   		if(isMatch){
-   			return done(null, user);
-   		} else {
-   			return done(null, false, {message: 'Invalid password'});
-   		}
-   	});
+   	
    });
   }));
 
